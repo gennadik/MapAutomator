@@ -1,0 +1,92 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "MapAutomator/1.0.0": {
+        "dependencies": {
+          "Microsoft.TestApi": "0.6.0",
+          "System.Drawing.Common": "8.0.7",
+          "UIAComWrapper": "1.1.0.14"
+        },
+        "runtime": {
+          "MapAutomator.dll": {}
+        }
+      },
+      "Microsoft.TestApi/0.6.0": {
+        "runtime": {
+          "lib/net40/TestApiCore.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          },
+          "lib/net40/TestApiWpf.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Microsoft.Win32.SystemEvents/8.0.0": {},
+      "System.Drawing.Common/8.0.7": {
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/System.Drawing.Common.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.724.31308"
+          }
+        }
+      },
+      "UIAComWrapper/1.1.0.14": {
+        "runtime": {
+          "lib/net40/Interop.UIAutomationClient.dll": {
+            "assemblyVersion": "12.0.20617.1",
+            "fileVersion": "12.0.20617.1"
+          },
+          "lib/net40/UIAComWrapper.dll": {
+            "assemblyVersion": "1.1.0.14",
+            "fileVersion": "1.1.0.14"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MapAutomator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.TestApi/0.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bvbJVGx0dg7tJ7/W6kdvI6T4qgk19zU3Jo7o9/1Ha3hYbpuG7ErTQAtlas1CipX/C539YXoWCgrUbbJcokI6YA==",
+      "path": "microsoft.testapi/0.6.0",
+      "hashPath": "microsoft.testapi.0.6.0.nupkg.sha512"
+    },
+    "Microsoft.Win32.SystemEvents/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9opKRyOKMCi2xJ7Bj7kxtZ1r9vbzosMvRrdEhVhDz8j8MoBGgB+WmC94yH839NPH+BclAjtQ/pyagvi/8gDLkw==",
+      "path": "microsoft.win32.systemevents/8.0.0",
+      "hashPath": "microsoft.win32.systemevents.8.0.0.nupkg.sha512"
+    },
+    "System.Drawing.Common/8.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DoeBae0gZvxs3mtfoub6F1k28fSkFPzmhFuvblplKMnLYKmTMVy0j4Yxahh96KM532JzHGDxhJn1VpMKSB1pyg==",
+      "path": "system.drawing.common/8.0.7",
+      "hashPath": "system.drawing.common.8.0.7.nupkg.sha512"
+    },
+    "UIAComWrapper/1.1.0.14": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Cg7lhE4nN2PIQZAbdpKPPPTI2kAxLbMK0r1Xb16OWaEuYaR1lWnMibF3hxswAq4+zMNcL9YLSjPFXdxl6ACJ+Q==",
+      "path": "uiacomwrapper/1.1.0.14",
+      "hashPath": "uiacomwrapper.1.1.0.14.nupkg.sha512"
+    }
+  }
+}
