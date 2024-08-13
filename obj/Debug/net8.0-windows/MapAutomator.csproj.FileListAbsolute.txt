@@ -20,3 +20,4 @@ C:\Temp\MapAutomator\obj\Debug\net8.0-windows\refint\MapAutomator.dll
 C:\Temp\MapAutomator\obj\Debug\net8.0-windows\MapAutomator.pdb
 C:\Temp\MapAutomator\obj\Debug\net8.0-windows\MapAutomator.genruntimeconfig.cache
 C:\Temp\MapAutomator\obj\Debug\net8.0-windows\ref\MapAutomator.dll
+C:\Temp\MapAutomator\obj\Debug\net8.0-windows\MapAutomator.sourcelink.json
