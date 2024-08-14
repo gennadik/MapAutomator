@@ -9,13 +9,13 @@ namespace MapAutomator
     internal class Program
     {
         //We need to set the screen capture paramters. This caters for different screen resolutions and multi monitor setups.
-        //We assume a full screen canvas (maximise capture area) however intend to leave 10px margin on all sides to remove risk of edge artefacts.
+        //We assume a full screen canvas (maximise capture area) however intend to leave 50px margin on all sides to remove risk of edge artefacts (demonstrated changes to vector map around the edges when panning).
         //At a screen resolution of 3840 x 2160 (Effective canvas of 3820 x 2140), and a pan step size of 150px, we can expect to capture > 120 output tiles per capture tile.
 
-        static int intScreenCanvasWidthPX = 3820;              //Note here we have already taken 20px off the actual canvas width - 10px on each side.
-        static int intScreenCanvasHeightPX = 2140;             //Note here we have already taken 20px off the actual canvas height - 10px on each side.
-        static int intScreenCanvasOffsetX = -956;              //This is the top left corner of the canvas relative to 0,0 (top left of primary display) for multi screen setups. Note this should be 10px margin off of left.
-        static int intScreenCanvasOffsetY = -2150;             //This is the top left corner of the canvas relative to 0,0 (top left of primary display) for multi screen setups. Note this should be 10px margin off of top.
+        static int intScreenCanvasWidthPX = 3740;              //Note here we have already taken 100px off the actual canvas width - 50px on each side.
+        static int intScreenCanvasHeightPX = 2060;             //Note here we have already taken 100px off the actual canvas height - 50px on each side.
+        static int intScreenCanvasOffsetX = -916;              //This is the top left corner of the canvas relative to 0,0 (top left of primary display) for multi screen setups. Note this should be 50px margin off of left.
+        static int intScreenCanvasOffsetY = -2110;             //This is the top left corner of the canvas relative to 0,0 (top left of primary display) for multi screen setups. Note this should be 50px margin off of top.
         static int intFocusClickX = 0;                         //This is the X coordinate to click to set focus on the browser window with the map. This is not the same as canvas coordinates due to resolution scaling in multimonitor setups.
         static int intFocusClickY = -100;                      //This is the Y coordinate to click to set focus on the browser window with the map. This is not the same as canvas coordinates due to resolution scaling in multimonitor setups.
         static int intUnfocusClickX = 1;                       //This is the X coordinate to move the mouse to after setting focus to the browser window with the map. So that the mouse does not get in the way of the capture.
@@ -24,7 +24,7 @@ namespace MapAutomator
 
         static string strCaptureBatchName = "TestBatch";       //What is the name of this capture batch (including ZoomLevel)
         static int intInputTilesToCaptureX = 3;                //Given a starting point at the top left of required region, and selected zoom level, how many input frames to the right (including the first one) do we want to capture?
-        static int intInputTilesToCaptureY = 2;                //Given a starting point at the top left of required region, and selected zoom level, how many input frames down (including the first one) do we want to capture?
+        static int intInputTilesToCaptureY = 3;                //Given a starting point at the top left of required region, and selected zoom level, how many input frames down (including the first one) do we want to capture?
 
         static void Main(string[] args)
         {
@@ -40,8 +40,8 @@ namespace MapAutomator
             int intCurrRow = 1;
             int intCurrCol = 1;
             int intCurrRowCrop = 0;
-            int intCurrColCrop = 0;
-            string strLastXDirection = "Right";
+            //int intCurrColCrop = 0;
+            //string strLastXDirection = "Right";
             string strLastYDirection = "Down";
             string strCurrDirection = "Right";
 
@@ -67,22 +67,23 @@ namespace MapAutomator
                 {
                     int intCropOverlayEdgeAt = findStitchMatch(ref printscreen2, ref printscreen1, "Right", intExpectedColumnStitch);
                     cropRect = new Rectangle(intCropOverlayEdgeAt, strLastYDirection == "Down" ? intCurrRowCrop : 0, printscreen2.Width - intCropOverlayEdgeAt, strLastYDirection == "Down" ? printscreen2.Height - intCurrRowCrop : printscreen2.Height - intCurrRowCrop - 1);
-                    strLastXDirection = "Right";
-                    intCurrColCrop = intCropOverlayEdgeAt;
+                    //strLastXDirection = "Right";
+                    //intCurrColCrop = intCropOverlayEdgeAt;
                     intCurrCol++;
                 }
                 else if (strCurrDirection == "Left") //Cropping off right edge (expect large match value)
                 {
-                    int intCropOverlayEdgeAt = findStitchMatch(ref printscreen2, ref printscreen1, "Left", printscreen2.Width - intExpectedColumnStitch);
+                    int intCropOverlayEdgeAt = findStitchMatch(ref printscreen2, ref printscreen1, "Left", printscreen2.Width - intExpectedColumnStitch + 1);
                     cropRect = new Rectangle(0, strLastYDirection == "Down" ? intCurrRowCrop : 0, intCropOverlayEdgeAt - 1, strLastYDirection == "Down" ? printscreen2.Height - intCurrRowCrop : printscreen2.Height - intCurrRowCrop - 1);
-                    strLastXDirection = "Left";
-                    intCurrColCrop = intCropOverlayEdgeAt;
+                    //strLastXDirection = "Left";
+                    //intCurrColCrop = intCropOverlayEdgeAt;
                     intCurrCol--;
                 }
                 else if (strCurrDirection == "Up") //Cropping off bottom edge (expect large match value)
                 {
-                    int intCropOverlayEdgeAt = findStitchMatch(ref printscreen2, ref printscreen1, "Top", printscreen2.Height - intExpectedRowStitch);
-                    cropRect = new Rectangle(strLastXDirection == "Right" ? intCurrColCrop : 0, 0, strLastXDirection == "Right" ? printscreen2.Width - intCurrColCrop : printscreen2.Width - intCurrColCrop - 1, intCropOverlayEdgeAt - 1);
+                    int intCropOverlayEdgeAt = findStitchMatch(ref printscreen2, ref printscreen1, "Top", printscreen2.Height - intExpectedRowStitch + 1);
+                    //cropRect = new Rectangle(strLastXDirection == "Right" ? intCurrColCrop : 0, 0, strLastXDirection == "Right" ? printscreen2.Width - intCurrColCrop : printscreen2.Width - intCurrColCrop - 1, intCropOverlayEdgeAt - 1);
+                    cropRect = new Rectangle(0, 0, printscreen2.Width, intCropOverlayEdgeAt - 1);
                     strLastYDirection = "Up";
                     intCurrRowCrop = intCropOverlayEdgeAt;
                     intCurrRow--;
@@ -90,7 +91,8 @@ namespace MapAutomator
                 else if (strCurrDirection == "Down") //Cropping off top edge (expect small match value)
                 {
                     int intCropOverlayEdgeAt = findStitchMatch(ref printscreen2, ref printscreen1, "Bottom", intExpectedRowStitch);
-                    cropRect = new Rectangle(strLastXDirection == "Right" ? intCurrColCrop : 0, intCropOverlayEdgeAt, strLastXDirection == "Right" ? printscreen2.Width - intCurrColCrop : printscreen2.Width - intCurrColCrop - 1, printscreen2.Height - intCropOverlayEdgeAt);
+                    //cropRect = new Rectangle(strLastXDirection == "Right" ? intCurrColCrop : 0, intCropOverlayEdgeAt, strLastXDirection == "Right" ? printscreen2.Width - intCurrColCrop : printscreen2.Width - intCurrColCrop - 1, printscreen2.Height - intCropOverlayEdgeAt);
+                    cropRect = new Rectangle(0, intCropOverlayEdgeAt, printscreen2.Width, printscreen2.Height - intCropOverlayEdgeAt);
                     strLastYDirection = "Down";
                     intCurrRowCrop = intCropOverlayEdgeAt;
                     intCurrRow++;
@@ -152,7 +154,8 @@ namespace MapAutomator
                 if (strDirection == "Down") { Keyboard.Press(Key.Down); Thread.Sleep(intDelayBetween); }    //Each Keypress moves by 150px
             }
 
-            Thread.Sleep(1000);
+            //Give it 2 seconds to load - map often blends in labels after it has been panned.
+            Thread.Sleep(2000);
         }
 
         static int findStitchMatch(ref Bitmap bmpOverlay, ref Bitmap bmpBG, string strBGEdgeToStitch, int intOverlayMatchGuess, int intTolerance = 5)
@@ -162,10 +165,11 @@ namespace MapAutomator
             int intCurrTarget = intOverlayMatchGuess - 1;
             int intOffsetDirection = -1;
             int intOffsetValue = 0;
-            bool blnRecordedFail = false;
 
             int intPixelDifference = 0;
             int intImperfectPixels = 0;
+            int intFailedPixels = 0;
+            int intTotalPixels = 0;
 
             while (1 == 1)
             {
@@ -178,18 +182,9 @@ namespace MapAutomator
                                              Math.Abs(bmpBG.GetPixel(strBGEdgeToStitch == "Left" ? 0 : bmpBG.Width - 1, i).G - bmpOverlay.GetPixel(intCurrTarget, i).G) +
                                              Math.Abs(bmpBG.GetPixel(strBGEdgeToStitch == "Left" ? 0 : bmpBG.Width - 1, i).B - bmpOverlay.GetPixel(intCurrTarget, i).B);
 
-                        if (intPixelDifference > 0)
-                        {
-                            intImperfectPixels++;
-
-                            if (intPixelDifference > 3)
-                            {
-                                intOffsetDirection = intOffsetDirection * -1;
-                                if (intOffsetDirection == 1) { intOffsetValue++; }
-                                blnRecordedFail = true;
-                                break;
-                            }
-                        }
+                        intTotalPixels++;
+                        if (intPixelDifference > 0 && intPixelDifference <= 3) { intImperfectPixels++; }
+                        if (intPixelDifference > 3) { intFailedPixels++; }
                     }
                 }
                 else
@@ -201,26 +196,22 @@ namespace MapAutomator
                                              Math.Abs(bmpBG.GetPixel(i, strBGEdgeToStitch == "Top" ? 0 : bmpBG.Height - 1).G - bmpOverlay.GetPixel(i, intCurrTarget).G) +
                                              Math.Abs(bmpBG.GetPixel(i, strBGEdgeToStitch == "Top" ? 0 : bmpBG.Height - 1).B - bmpOverlay.GetPixel(i, intCurrTarget).B);
 
-                        if (intPixelDifference > 0)
-                        {
-                            intImperfectPixels++;
-
-                            if (intPixelDifference > 3)
-                            {
-                                intOffsetDirection = intOffsetDirection * -1;
-                                if (intOffsetDirection == 1) { intOffsetValue++; }
-                                blnRecordedFail = true;
-                                break;
-                            }
-                        }
+                        intTotalPixels++;
+                        if (intPixelDifference > 0 && intPixelDifference <= 3) { intImperfectPixels++; }
+                        if (intPixelDifference > 3) { intFailedPixels++; }
                     }
                 }
 
-                if (blnRecordedFail)
+                if ((decimal)intFailedPixels / intTotalPixels * 100 > 5) //If more than 5% of pixels failed stitch, try another position to stitch on
                 {
-                    blnRecordedFail = false;
+                    intOffsetDirection = intOffsetDirection * -1;
+                    if (intOffsetDirection == 1) { intOffsetValue++; }
+
+                    intTotalPixels = 0;
+                    intFailedPixels = 0;
                     intImperfectPixels = 0;
-                    intCurrTarget = intOverlayMatchGuess + intOffsetDirection * intOffsetValue;
+                    
+                    intCurrTarget = intOverlayMatchGuess -1 + intOffsetDirection * intOffsetValue;
 
                     if (Math.Abs(intCurrTarget - intOverlayMatchGuess) > intTolerance)
                     {
@@ -230,7 +221,7 @@ namespace MapAutomator
                 }
                 else
                 {
-                    Console.WriteLine("INFO: Matched column is (" + (intCurrTarget+1) + ") with (" + intImperfectPixels + ") imperfect pixels.");
+                    Console.WriteLine("INFO: Matched column is (" + (intCurrTarget+1) + ") with (" + intImperfectPixels + ") imperfect and (" + intFailedPixels + "," + Math.Round((decimal)intFailedPixels / intTotalPixels * 100,2) + "%) failed pixels.");
                     return intCurrTarget + 1;
                 }
             }
